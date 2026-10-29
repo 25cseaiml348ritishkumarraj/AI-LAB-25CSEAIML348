@@ -1,0 +1,73 @@
+import collections # Use collections.deque for efficient popping from the left side of the queue
+
+#BFS
+
+def bfs(graph, start_node):
+    # Check if the start_node exists in the graph
+    if start_node not in graph:
+        print(f"Error: Starting node '{start_node}' not found in the graph.")
+        return []
+
+    visited = []
+    queue = collections.deque([start_node]) # Use deque for O(1) popleft
+
+    while queue:
+        current_node = queue.popleft() # Use popleft for BFS
+
+        if current_node not in visited:
+            print(f"Exploring Node: {current_node}")
+            visited.append(current_node)
+
+            for neighbour in graph.get(current_node, []):
+                if neighbour not in visited and neighbour not in queue:
+                    queue.append(neighbour)
+
+    return visited
+
+
+print("---Build Your Graph")
+student_graph = {}
+
+num_edges = int(input("How many edges does your graph have?"))
+
+print("Enter each edge separated by a space(e.g., A B):")
+
+for i in range(num_edges):
+    while True:
+        try:
+            user_input = input(f"Edge {i + 1}:")
+            u, v = user_input.split()
+            break
+        except ValueError:
+            print("Invalid input! Please enter exactly two node names separated by a single space (e.g., A B or 1 2).")
+
+    if u not in student_graph:
+        student_graph[u] = []
+
+    if v not in student_graph:
+        student_graph[v] = []
+
+    student_graph[u].append(v)
+    student_graph[v].append(u)
+
+start = input("Enter the starting node for BFS:")
+
+print(f"\nYour Graph Dictionary: {student_graph}")
+print("Starting BFS Traversal...")
+
+bfs(student_graph, start)
+output
+---Build Your Graph
+How many edges does your graph have?2
+Enter each edge separated by a space(e.g., A B):
+Edge 1:2 3
+Edge 2:
+Invalid input! Please enter exactly two node names separated by a single space (e.g., A B or 1 2).
+Edge 2: 4 5
+Enter the starting node for BFS:2
+
+Your Graph Dictionary: {'2': ['3'], '3': ['2'], '4': ['5'], '5': ['4']}
+Starting BFS Traversal...
+Exploring Node: 2
+Exploring Node: 3
+['2', '3']
